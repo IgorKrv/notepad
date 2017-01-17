@@ -8,11 +8,11 @@ class Task < Post
   end
 
   def read_from_console
-    puts "?? ???? ??????"
+    puts "Что надо делать ?"
 
     @text = STDIN.gets.chomp
 
-    puts " ? ?????? ???? ?????? ???? ? ??? ??.??.????., ?????? 12.05.2003"
+    puts " К какому числу? Укажите дату в формате ДД,ММ,ГГГГ, например  12.05.2003"
     input = STDIN.gets.chomp
 
     @due_date = Date.parse(input)
@@ -21,8 +21,16 @@ class Task < Post
 
   def to_strings
 
-    time_string = "??????? : #{@created_at.strftime("%Y.%m.%d, %H:%M:%S")}  \n\r \n\r"
-    deadline = "????? ?? : #{@due_date}"
+    time_string = "Создано : #{@created_at.strftime("%Y.%m.%d, %H:%M:%S")}  \n\r \n\r"
+    deadline = "Крайний срок : #{@due_date}"
     return [deadline, @text, time_string]
+  end
+  def to_db_hash
+    return super.merge(
+                    {
+                        'text' => @text,
+                        'due_date' =>@due_date.to_s
+                    }
+    )
   end
 end
